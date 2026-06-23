@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Task } from '../types/Task';
 import { formatDate } from '../utils/date';
 
@@ -11,43 +12,38 @@ interface Props {
 }
 
 const TaskItem = ({ task, onToggle, onDelete, onPress }: Props) => {
-    return (
-      <TouchableOpacity style={styles.container} onPress={() => onPress(task)}>
-        <View style={styles.left}>
-          <TouchableOpacity
-            style={[
-              styles.circle,
-              task.status === 'completed' && styles.circleCompleted,
-            ]}
-            onPress={() => onToggle(task.id)}
-          />
-        </View>
-  
-        <View style={styles.middle}>
-          <Text
-            style={[
-              styles.title,
-              task.status === 'completed' && styles.titleCompleted,
-            ]}
-          >
-            {task.title}
-          </Text>
-  
-          <Text style={styles.date}>
-            {formatDate(task.createdDate)}
-          </Text>
-        </View>
-  
+  const isCompleted = task.status === 'completed';
+
+  return (
+    <TouchableOpacity style={styles.container} onPress={() => onPress(task)}>
+      <View style={styles.left}>
         <TouchableOpacity
-          style={styles.deleteBtn}
-          onPress={() => onDelete(task.id)}
+          style={[styles.circle, isCompleted && styles.circleCompleted]}
+          onPress={() => onToggle(task.id)}
         >
-          <Text style={styles.deleteText}>✕</Text>
+          {isCompleted ? (
+            <Ionicons name="checkmark" size={14} color="#0F0F1E" />
+          ) : null}
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.middle}>
+        <Text style={[styles.title, isCompleted && styles.titleCompleted]}>
+          {task.title}
+        </Text>
+        <Text style={styles.date}>{formatDate(task.createdDate)}</Text>
+      </View>
+
+      <TouchableOpacity
+        style={styles.deleteBtn}
+        onPress={() => onDelete(task.id)}
+      >
+        <Ionicons name="trash-outline" size={18} color="#EF4444" />
       </TouchableOpacity>
-    );
-  };
-  
+    </TouchableOpacity>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -69,9 +65,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#00d4ff',
     backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   circleCompleted: {
     backgroundColor: '#00d4ff',
+    borderColor: '#00d4ff',
   },
   middle: {
     flex: 1,
@@ -92,10 +91,6 @@ const styles = StyleSheet.create({
   },
   deleteBtn: {
     padding: 6,
-  },
-  deleteText: {
-    fontSize: 16,
-    color: '#EF4444',
   },
 });
 
