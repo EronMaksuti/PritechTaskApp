@@ -40,7 +40,28 @@ Scan the QR code with Expo Go, or press a/i for an emulator/simulator.
 - Navigation between screens
 
 
-<img width="120" height="1345" alt="Screenshot-Task List" src="https://github.com/user-attachments/assets/51841d8a-7f7f-4ff7-83a8-874cb31522e5" />
-<img width="120" height="1345" alt="Screenshot - Task List - Pending" src="https://github.com/user-attachments/assets/45b37cdb-c6a0-4f6e-9311-0911a011cb2b" />
-<img width="120" height="1345" alt="Screenshot - Task Details" src="https://github.com/user-attachments/assets/000d60e4-4763-4560-9af2-e949bf503d5f" />
-<img width="120" height="1345" alt="Screenshot - Create Task" src="https://github.com/user-attachments/assets/78e2e418-532e-4d83-bc46-b95a5d80f248" />
+<table>
+<tr>
+<td align="center">
+<b>Task List</b><br>
+<img src="https://github.com/user-attachments/assets/51841d8a-7f7f-4ff7-83a8-874cb31522e5" width="280"/>
+</td>
+
+<td align="center">
+<b>Pending Tasks</b><br>
+<img src="https://github.com/user-attachments/assets/45b37cdb-c6a0-4f6e-9311-0911a011cb2b" width="280"/>
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>Task Details</b><br>
+<img src="https://github.com/user-attachments/assets/000d60e4-4763-4560-9af2-e949bf503d5f" width="280"/>
+</td>
+
+<td align="center">
+<b>Create Task</b><br>
+<img src="https://github.com/user-attachments/assets/78e2e418-532e-4d83-bc46-b95a5d80f248" width="280"/>
+</td>
+</tr>
+</table>
