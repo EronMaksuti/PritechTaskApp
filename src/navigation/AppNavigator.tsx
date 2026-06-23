@@ -5,7 +5,7 @@ import { Task } from '../types/Task';
 
 import TaskListScreen from '../screens/TaskListScreen';
 import AddTaskScreen from '../screens/AddTaskScreen';
-import TaskDetailScreen from '../screens/TaskDetailScreen';
+import TaskDetailScreen from '..TaskDetailScreen/screens/TaskDetailScreen';
 
 export type RootStackParamList = {
   TaskList: undefined;
