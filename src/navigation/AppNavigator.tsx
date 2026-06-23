@@ -5,7 +5,7 @@ import { Task } from '../types/Task';
 
 import TaskListScreen from '../screens/TaskListScreen';
 import AddTaskScreen from '../screens/AddTaskScreen';
-import TaskDetailScreen from '..TaskDetailScreen/screens/TaskDetailScreen';
+import TaskDetailScreen from '../screens/TaskDetailScreen';
 
 export type RootStackParamList = {
   TaskList: undefined;
@@ -15,36 +15,22 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const AppNavigator = () => {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName="TaskList"
-          screenOptions={{
-            headerStyle: { backgroundColor: '#4F46E5' },
-            headerTintColor: '#fff',
-            headerTitleStyle: { fontWeight: '700' },
-            contentStyle: { backgroundColor: '#F9FAFB' },
-          }}
-        >
-          <Stack.Screen
-            name="TaskList"
-            component={TaskListScreen}
-            options={{ title: 'My Tasks' }}
-          />
-          <Stack.Screen
-            name="AddTask"
-            component={AddTaskScreen}
-            options={{ title: 'Add Task' }}
-          />
-          <Stack.Screen
-            name="TaskDetail"
-            component={TaskDetailScreen}
-            options={{ title: 'Task Detail' }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  };
-  
-  export default AppNavigator;
+const AppNavigator: React.FC = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="TaskList"
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#0F0F1E' },
+        }}
+      >
+        <Stack.Screen name="TaskList" component={TaskListScreen} />
+        <Stack.Screen name="AddTask" component={AddTaskScreen} />
+        <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default AppNavigator;

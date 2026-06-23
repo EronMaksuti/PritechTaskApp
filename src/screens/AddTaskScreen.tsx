@@ -1,146 +1,209 @@
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  FlatList,
-  TouchableOpacity,
   TextInput,
+  TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  Alert,
 } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTasks } from '../context/TasksContext';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { Task } from '../types/Task';
-import TaskItem from '../components/TaskItem';
-import EmptyState from '../components/emptyState';
-import FilterBar from '../components/FilterBar';
-import { fetchDailyTip } from '../api/tipApi';
+import { validateTask } from '../utils/validation';
+import ScreenHeader from '../components/ScreenHeader';
 
-type Nav = NativeStackNavigationProp<RootStackParamList, 'TaskList'>;
+const AddTaskScreen = () => {
+  const navigation = useNavigation();
+  const { addTask } = useTasks();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-const TaskListScreen = () => {
-    const navigation = useNavigation<Nav>();
-  const { tasks, deleteTask, toggleStatus, searchQuery, setSearchQuery, filterStatus, setFilterStatus } = useTasks();
-  const [tip, setTip] = useState('');
-
-  useEffect(() => {
-    fetchDailyTip().then(data => setTip(data.tip));
-  }, []);
-
-  const filtered = tasks.filter(task => {
-    const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = filterStatus === 'all' || task.status === filterStatus;
-    return matchesSearch && matchesFilter;
-  });
-
-  const handlePress = (task: Task) => {
-    navigation.navigate('TaskDetail', { task });
+  const handleAdd = () => {
+    const error = validateTask(title, description);
+    if (error) {
+      Alert.alert('Validation Error', error);
+      return;
+    }
+    addTask(title, description);
+    navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-      {tip ? (
-        <View style={styles.tipBox}>
-          <Text style={styles.tipLabel}>💡 Daily Tip</Text>
-          <Text style={styles.tipText} numberOfLines={3}>{tip}</Text>
-        </View>
-      ) : null}
-
-      <TextInput
-        style={styles.search}
-        placeholder="Search tasks..."
-        placeholderTextColor="#9CA3AF"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+    >
+      <ScreenHeader
+        title="Create Task"
+        subtitle="Add a new task to your list"
+        showBack
       />
 
-      <FilterBar current={filterStatus} onChange={setFilterStatus} />
-
-      <FlatList
-        data={filtered}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <TaskItem
-            task={item}
-            onToggle={toggleStatus}
-            onDelete={deleteTask}
-            onPress={handlePress}
-          />
-        )}
-        ListEmptyComponent={<EmptyState />}
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         showsVerticalScrollIndicator={false}
-      />
-
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('AddTask')}
       >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
-    </View>
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Task Title</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="What needs to be done?"
+              placeholderTextColor="#6B7280"
+              value={title}
+              onChangeText={setTitle}
+              maxLength={60}
+              returnKeyType="next"
+            />
+            <Text style={styles.charCount}>{title.length}/60</Text>
+          </View>
+        </View>
+
+        <View style={styles.fieldGroup}>
+          <Text style={styles.label}>Description</Text>
+          <View style={styles.textareaWrapper}>
+            <TextInput
+              style={styles.textarea}
+              placeholder="Add details about your task..."
+              placeholderTextColor="#6B7280"
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              maxLength={200}
+              textAlignVertical="top"
+            />
+            <Text style={styles.charCount}>{description.length}/200</Text>
+          </View>
+        </View>
+
+        <View style={styles.buttonContainer}>
+          <LinearGradient
+            colors={['#00d4ff', '#0099cc']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <TouchableOpacity style={styles.btn} onPress={handleAdd}>
+              <Text style={styles.btnText}>Create Task</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          <TouchableOpacity
+            style={styles.cancelBtn}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.cancelBtnText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: '#0F0F1E',
   },
-  tipBox: {
-    backgroundColor: '#EEF2FF',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 14,
-    borderLeftWidth: 4,
-    borderLeftColor: '#4F46E5',
+  scrollView: {
+    flex: 1,
   },
-  tipLabel: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: '#4F46E5',
-    marginBottom: 4,
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 32,
   },
-  tipText: {
+  fieldGroup: {
+    marginBottom: 24,
+  },
+  label: {
     fontSize: 13,
-    color: '#374151',
-    lineHeight: 18,
+    fontWeight: '700',
+    color: '#E5E7EB',
+    marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
-  search: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
+  inputWrapper: {
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
     paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 14,
-    color: '#1F2937',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 1,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#374151',
   },
-  fab: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#4F46E5',
+  textareaWrapper: {
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: '#374151',
+    minHeight: 140,
+  },
+  input: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    fontWeight: '500',
+    padding: 0,
+    minHeight: 22,
+  },
+  textarea: {
+    fontSize: 15,
+    color: '#FFFFFF',
+    fontWeight: '500',
+    padding: 0,
+    minHeight: 100,
+  },
+  charCount: {
+    fontSize: 11,
+    color: '#6B7280',
+    marginTop: 8,
+    fontWeight: '600',
+    textAlign: 'right',
+  },
+  buttonContainer: {
+    marginTop: 'auto',
+    paddingTop: 12,
+    gap: 12,
+  },
+  gradientButton: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  btn: {
+    paddingVertical: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#4F46E5',
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
   },
-  fabText: {
-    fontSize: 28,
-    color: '#fff',
-    lineHeight: 32,
+  btnText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
+  cancelBtn: {
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#374151',
+  },
+  cancelBtnText: {
+    color: '#9CA3AF',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
 });
 
-export default TaskListScreen;
+export default AddTaskScreen;

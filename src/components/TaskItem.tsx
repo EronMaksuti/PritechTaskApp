@@ -52,15 +52,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#1F2937',
     borderRadius: 12,
     padding: 14,
     marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: '#374151',
   },
   left: {
     marginRight: 12,
@@ -70,11 +67,11 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#4F46E5',
+    borderColor: '#00d4ff',
     backgroundColor: 'transparent',
   },
   circleCompleted: {
-    backgroundColor: '#4F46E5',
+    backgroundColor: '#00d4ff',
   },
   middle: {
     flex: 1,
@@ -82,7 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1F2937',
+    color: '#FFFFFF',
   },
   titleCompleted: {
     textDecorationLine: 'line-through',

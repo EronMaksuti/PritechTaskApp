@@ -8,19 +8,21 @@ import {
   StyleSheet,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { useTasks } from '../context/TasksContext';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Task } from '../types/Task';
 import TaskItem from '../components/TaskItem';
-import EmptyState from '../components/emptyState';
+import EmptyState from '../components/EmptyState';
 import FilterBar from '../components/FilterBar';
+import ScreenHeader from '../components/ScreenHeader';
 import { fetchDailyTip } from '../api/tipApi';
 
 type Nav = NativeStackNavigationProp<RootStackParamList, 'TaskList'>;
 
 const TaskListScreen = () => {
-const navigation = useNavigation<Nav>();
+  const navigation = useNavigation<Nav>();
   const { tasks, deleteTask, toggleStatus, searchQuery, setSearchQuery, filterStatus, setFilterStatus } = useTasks();
   const [tip, setTip] = useState('');
 
@@ -40,23 +42,43 @@ const navigation = useNavigation<Nav>();
 
   return (
     <View style={styles.container}>
-      {tip ? (
-        <View style={styles.tipBox}>
-          <Text style={styles.tipLabel}>💡 Daily Tip</Text>
-          <Text style={styles.tipText} numberOfLines={3}>{tip}</Text>
-        </View>
-      ) : null}
-
-      <TextInput
-        style={styles.search}
-        placeholder="Search tasks..."
-        placeholderTextColor="#9CA3AF"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
+      <ScreenHeader
+        title="Tasks"
+        subtitle="Manage your daily priorities"
       />
 
+      {/* Premium Tip Box */}
+      {tip ? (
+        <LinearGradient
+          colors={['#1a2f3a', '#0d1f2a']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.tipBox}
+        >
+          <Text style={styles.tipLabel}>✨ Daily Insight</Text>
+          <Text style={styles.tipText} numberOfLines={3}>{tip}</Text>
+          <View style={styles.tipAccent} />
+        </LinearGradient>
+      ) : null}
+
+      {/* Search Input - Premium Style */}
+      <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.search}
+          placeholder="Search tasks..."
+          placeholderTextColor="#6B7280"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        <View style={styles.searchIcon}>
+          <Text style={styles.searchIconText}>🔍</Text>
+        </View>
+      </View>
+
+      {/* Filter Bar */}
       <FilterBar current={filterStatus} onChange={setFilterStatus} />
 
+      {/* Task List */}
       <FlatList
         data={filtered}
         keyExtractor={item => item.id}
@@ -70,14 +92,23 @@ const navigation = useNavigation<Nav>();
         )}
         ListEmptyComponent={<EmptyState />}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
       />
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('AddTask')}
+      {/* Premium FAB with gradient */}
+      <LinearGradient
+        colors={['#00d4ff', '#0099cc']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.fabGradient}
       >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.fab}
+          onPress={() => navigation.navigate('AddTask')}
+        >
+          <Text style={styles.fabText}>+</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
@@ -85,60 +116,92 @@ const navigation = useNavigation<Nav>();
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    backgroundColor: '#0F0F1E',
   },
   tipBox: {
-    backgroundColor: '#EEF2FF',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 14,
-    borderLeftWidth: 4,
-    borderLeftColor: '#4F46E5',
+    marginHorizontal: 16,
+    marginTop: 20,
+    marginBottom: 16,
+    borderRadius: 16,
+    padding: 16,
+    borderLeftWidth: 3,
+    borderLeftColor: '#00d4ff',
+    overflow: 'hidden',
   },
   tipLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#4F46E5',
-    marginBottom: 4,
+    color: '#00d4ff',
+    marginBottom: 6,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   tipText: {
     fontSize: 13,
-    color: '#374151',
-    lineHeight: 18,
+    color: '#E5E7EB',
+    lineHeight: 19,
+    fontWeight: '500',
+  },
+  tipAccent: {
+    width: 60,
+    height: 1,
+    backgroundColor: '#00d4ff',
+    marginTop: 12,
+    opacity: 0.5,
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    position: 'relative',
   },
   search: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
+    backgroundColor: '#1F2937',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     fontSize: 14,
-    color: '#1F2937',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 1,
+    color: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#374151',
   },
-  fab: {
+  searchIcon: {
     position: 'absolute',
-    bottom: 24,
-    right: 24,
+    right: 26,
+    top: 12,
+  },
+  searchIconText: {
+    fontSize: 16,
+  },
+  listContent: {
+    paddingHorizontal: 16,
+    paddingBottom: 100,
+  },
+  fabGradient: {
+    position: 'absolute',
+    bottom: 28,
+    right: 28,
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#4F46E5',
+    padding: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#00d4ff',
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 8,
+  },
+  fab: {
+    width: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#4F46E5',
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
   },
   fabText: {
     fontSize: 28,
-    color: '#fff',
+    color: '#FFFFFF',
+    fontWeight: '700',
     lineHeight: 32,
   },
 });
