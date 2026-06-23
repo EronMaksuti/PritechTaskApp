@@ -38,3 +38,9 @@ Scan the QR code with Expo Go, or press a/i for an emulator/simulator.
 - Filter tasks by status
 - Local persistence via AsyncStorage
 - Navigation between screens
+
+
+<img width="908" height="1880" alt="Screenshot-Task List" src="https://github.com/user-attachments/assets/51841d8a-7f7f-4ff7-83a8-874cb31522e5" />
+<img width="908" height="1880" alt="Screenshot - Task List - Pending" src="https://github.com/user-attachments/assets/45b37cdb-c6a0-4f6e-9311-0911a011cb2b" />
+<img width="908" height="1880" alt="Screenshot - Task Details" src="https://github.com/user-attachments/assets/000d60e4-4763-4560-9af2-e949bf503d5f" />
+<img width="908" height="1880" alt="Screenshot - Create Task" src="https://github.com/user-attachments/assets/78e2e418-532e-4d83-bc46-b95a5d80f248" />
