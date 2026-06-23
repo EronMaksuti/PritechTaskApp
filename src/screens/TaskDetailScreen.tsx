@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { useTasks } from '../context/TasksContext';
@@ -46,7 +47,11 @@ const TaskDetailScreen = () => {
             style={styles.badgeGradient}
           >
             <View style={styles.badge}>
-              <Text style={styles.badgeIcon}>{isCompleted ? '✓' : '•'}</Text>
+              <Ionicons
+                name={isCompleted ? 'checkmark-circle' : 'time-outline'}
+                size={14}
+                color="#FFFFFF"
+              />
               <Text style={styles.badgeText}>
                 {isCompleted ? 'Completed' : 'Pending'}
               </Text>
@@ -98,15 +103,21 @@ const TaskDetailScreen = () => {
               navigation.goBack();
             }}
           >
+            <Ionicons
+              name={isCompleted ? 'refresh-outline' : 'checkmark-circle-outline'}
+              size={20}
+              color="#FFFFFF"
+            />
             <Text style={styles.toggleText}>
-              {isCompleted ? '↺ Mark as Pending' : '✓ Mark as Completed'}
+              {isCompleted ? 'Mark as Pending' : 'Mark as Completed'}
             </Text>
           </TouchableOpacity>
         </LinearGradient>
 
         {/* Secondary Action - Delete */}
         <TouchableOpacity style={styles.deleteBtn} onPress={handleDelete}>
-          <Text style={styles.deleteText}>🗑 Delete Task</Text>
+          <Ionicons name="trash-outline" size={20} color="#FCA5A5" />
+          <Text style={styles.deleteText}>Delete Task</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -149,11 +160,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-  },
-  badgeIcon: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: '#FFFFFF',
   },
   badgeText: {
     fontSize: 12,
@@ -222,9 +228,11 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   toggleBtn: {
-    paddingVertical: 16,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 16,
   },
   toggleText: {
     color: '#FFFFFF',
@@ -233,10 +241,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
   deleteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     backgroundColor: '#7F1D1D',
     borderRadius: 12,
     paddingVertical: 16,
-    alignItems: 'center',
     borderWidth: 1,
     borderColor: '#991B1B',
   },

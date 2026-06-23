@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,7 +24,8 @@ const ScreenHeader = ({ title, subtitle, showBack }: Props) => {
     >
       {showBack ? (
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-          <Text style={styles.backText}>← Back</Text>
+          <Ionicons name="chevron-back" size={20} color="#00d4ff" />
+          <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
       ) : null}
       <Text style={styles.headerTitle}>{title}</Text>
@@ -38,6 +40,9 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
     marginBottom: 12,
     alignSelf: 'flex-start',
   },

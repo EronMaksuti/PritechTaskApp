@@ -35,24 +35,30 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 8,
-    marginBottom: 14,
+    paddingHorizontal: 16,
+    marginBottom: 16,
   },
   btn: {
-    paddingHorizontal: 16,
-    paddingVertical: 7,
-    borderRadius: 20,
-    backgroundColor: '#F3F4F6',
+    flex: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: '#1F2937',
+    borderWidth: 1,
+    borderColor: '#374151',
+    alignItems: 'center',
   },
   btnActive: {
-    backgroundColor: '#4F46E5',
+    backgroundColor: '#0d1f2a',
+    borderColor: '#00d4ff',
   },
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#6B7280',
+    color: '#9CA3AF',
   },
   labelActive: {
-    color: '#fff',
+    color: '#00d4ff',
   },
 });
 

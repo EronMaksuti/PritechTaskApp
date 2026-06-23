@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTasks } from '../context/TasksContext';
 import { RootStackParamList } from '../navigation/AppNavigator';
@@ -55,7 +56,10 @@ const TaskListScreen = () => {
           end={{ x: 1, y: 1 }}
           style={styles.tipBox}
         >
-          <Text style={styles.tipLabel}>✨ Daily Insight</Text>
+          <View style={styles.tipLabelRow}>
+            <Ionicons name="bulb-outline" size={14} color="#00d4ff" />
+            <Text style={styles.tipLabel}>Daily Insight</Text>
+          </View>
           <Text style={styles.tipText} numberOfLines={3}>{tip}</Text>
           <View style={styles.tipAccent} />
         </LinearGradient>
@@ -71,7 +75,7 @@ const TaskListScreen = () => {
           onChangeText={setSearchQuery}
         />
         <View style={styles.searchIcon}>
-          <Text style={styles.searchIconText}>🔍</Text>
+          <Ionicons name="search" size={18} color="#6B7280" />
         </View>
       </View>
 
@@ -106,7 +110,7 @@ const TaskListScreen = () => {
           style={styles.fab}
           onPress={() => navigation.navigate('AddTask')}
         >
-          <Text style={styles.fabText}>+</Text>
+          <Ionicons name="add" size={28} color="#FFFFFF" />
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -128,11 +132,16 @@ const styles = StyleSheet.create({
     borderLeftColor: '#00d4ff',
     overflow: 'hidden',
   },
+  tipLabelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 6,
+  },
   tipLabel: {
     fontSize: 12,
     fontWeight: '700',
     color: '#00d4ff',
-    marginBottom: 6,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -166,11 +175,8 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     position: 'absolute',
-    right: 26,
-    top: 12,
-  },
-  searchIconText: {
-    fontSize: 16,
+    right: 28,
+    top: 13,
   },
   listContent: {
     paddingHorizontal: 16,
@@ -197,12 +203,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  fabText: {
-    fontSize: 28,
-    color: '#FFFFFF',
-    fontWeight: '700',
-    lineHeight: 32,
   },
 });
 
